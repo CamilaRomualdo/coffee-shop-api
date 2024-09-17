@@ -1,0 +1,27 @@
+{
+  "name": "coffee-shop-api",
+  "version": "1.0.0",
+  "description": "Simple application featuring a REST API built with the Serverless Framework, offering full CRUD (Create, Read, Update, Delete) functionality.",
+  "scripts": {
+    "start": "serverless offline start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "coffee-shop-api"
+  },
+  "keywords": [
+    "API",
+    "CRUD",
+    "Node.js",
+    "Serverless"
+  ],
+  "author": "Camila Romualdo",
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "serverless": "^4.3.3"
+  },
+  "devDependencies": {
+    "serverless-offline": "^14.3.1"
+  }
+}

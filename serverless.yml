@@ -1,0 +1,63 @@
+service: coffee-shop-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  environment:
+    COFFEE_ORDERS_TABLE: ${self:custom.tables.coffeeOrdersTable}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:Scan
+      Resource:
+        - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:custom.tables.coffeeOrdersTable}
+
+functions:
+  # CRUD
+  createCoffee:
+    handler: api/handlers/createCoffee.handler
+    events:
+      - http:
+          path: v1/orders/coffees
+          method: post
+  readCoffees:
+    handler: api/handlers/readCoffees.handler
+    events:
+      - http:
+          path: v1/orders/coffees
+          method: get
+  updateCoffee:
+    handler: api/handlers/updateCoffee.handler
+    events:
+      - http:
+          path: v1/orders/coffees/{order_id}
+          method: put
+  deleteCoffee:
+    handler: api/handlers/deleteCoffee.handler
+    events:
+      - http:
+          path: v1/orders/coffees/{order_id}
+          method: delete
+
+  # Others handlers.
+  getCoffeesByStatus:
+    handler: api/handlers/getCoffeesByStatus.handler
+    events:
+      - http:
+          path: v1/orders/coffees/status/{status}
+          method: get
+          request:
+            parameters:
+              paths:
+                status: true
+
+custom:
+  tables:
+    coffeeOrdersTable: COFFEE_ORDERS_TABLE
+
+plugins:
+  - serverless-offline
